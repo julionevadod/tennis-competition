@@ -4,7 +4,7 @@ from torch.nn import functional as f
 
 
 class Critic(nn.Module):
-    def __init__(self, input_size: int, action_size: int, output_size: int, fc1: int = 128, fc2: int = 64):
+    def __init__(self, input_size: int, action_size: int, output_size: int, fc1: int = 64, fc2: int = 16):
         """Initialize critic network for State-Value function approximation
 
         :param input_size: Input size of the network. Corresponds to state size
@@ -26,5 +26,5 @@ class Critic(nn.Module):
 
     def forward(self, state, actions):
         fc1_output = f.relu(self.fc1(state))
-        fc2_output = f.relu(self.fc2(torch.cat([fc1_output, actions], dim=1)))
+        fc2_output = f.relu(self.fc2(torch.cat([fc1_output.squeeze(), actions.squeeze()], dim=1)))
         return f.relu(self.output(fc2_output))

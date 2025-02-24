@@ -4,7 +4,7 @@ from torch.nn import functional as f
 
 
 class Actor(nn.Module):
-    def __init__(self, input_size: int, output_size: int, fc1_size: int = 128, fc2_size: int = 64):
+    def __init__(self, input_size: int, output_size: int, fc1_size: int = 64, fc2_size: int = 16):
         """Initialize Actor network for policy estimation
 
         :param input_size: Input size of the network. Corresponds to state size

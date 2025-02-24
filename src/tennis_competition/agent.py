@@ -4,16 +4,13 @@ import copy
 import numpy as np
 import torch
 from torch import nn
-from unityagents import UnityEnvironment
 
 from .actor import Actor
 from .critic import Critic
-from .OUNoise import OUNoise
-from .replay_buffer import ExperienceReplayBuffer
 
-INPUT_SIZE = 33
-ACTION_SIZE = 4
-NUM_AGENTS = 1
+INPUT_SIZE = 24
+ACTION_SIZE = 2
+NUM_AGENTS = 2
 MAX_LEN_EPISODE = 1000
 UPDATE_EVERY = 1
 WINDOW_SIZE = 100
@@ -37,17 +34,17 @@ class Agent:
         :type save_path: str
         """
         torch.manual_seed(0)
-        self.env = UnityEnvironment(file_name="../env/Reacher.app")
+        # self.env = UnityEnvironment(file_name="../env/Tennis.app")
         self.actor_local = Actor(INPUT_SIZE, ACTION_SIZE).to(device).eval()
         self.actor_target = copy.deepcopy(self.actor_local).to(device).eval()
         self.critic_local = Critic(INPUT_SIZE, ACTION_SIZE, 1).to(device).eval()  # 1 since we output reward directly
         self.critic_target = copy.deepcopy(self.critic_local).to(device).eval()
         self.loss = torch.nn.functional.mse_loss
-        self.replay_buffer = ExperienceReplayBuffer(BUFFER_SIZE)
+        # self.replay_buffer = ExperienceReplayBuffer(BUFFER_SIZE)
         self.optimizer_actor = torch.optim.Adam(self.actor_local.parameters(), lr=lr_actor)
         self.optimizer_critic = torch.optim.Adam(self.critic_local.parameters(), lr=lr_critic)
         self.gamma = gamma
-        self.noise = OUNoise(ACTION_SIZE, 0)
+        # self.noise = OUNoise(ACTION_SIZE, 0)
         self.save_path = save_path
 
     def _soft_update(self, source_network: nn.Module, target_network: nn.Module):

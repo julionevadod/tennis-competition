@@ -10,13 +10,13 @@ class ExperienceReplayBuffer:
     def __len__(self):
         return len(self.buffer)
 
-    def insert(self, experience):
+    def insert(self, experiences):
         """Add a new experience to the buffer
 
         :param experience: _description_
         :type experience: _type_
         """
-        self.buffer.append(experience)
+        self.buffer.append(experiences)
 
     def sample(self, batch_size: int):
         """_summary_
