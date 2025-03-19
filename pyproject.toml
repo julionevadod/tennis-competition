@@ -17,6 +17,10 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    "optuna>=4.2.1",
+    "unityagents",
+]
 
 [project.urls]
 Homepage = "https://julionevadod.github.io/tennis-competition/"
@@ -114,3 +118,5 @@ skip_empty = true
 branch = true
 source = ["src"]
 
+[tool.uv.sources]
+unityagents = { path = "python" }
