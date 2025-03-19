@@ -18,10 +18,8 @@ def play(agent):
     while True:
         with torch.no_grad():
             actions = np.vstack([
-                agent.actor_local(torch.tensor(
-                    states[0], dtype=torch.float32).to(device)).cpu().numpy(),
-                agent.actor_local(torch.tensor(
-                    states[1], dtype=torch.float32).to(device)).cpu().numpy(),
+                agent.actor_local(torch.tensor(states[0], dtype=torch.float32).to(device)).cpu().numpy(),
+                agent.actor_local(torch.tensor(states[1], dtype=torch.float32).to(device)).cpu().numpy(),
             ])
         actions = np.clip(actions, -1, 1)
         env_info = env.step(actions)[brain_name]
@@ -55,8 +53,7 @@ if __name__ == "__main__":
         "-b", "--batch_size", default=config["DEFAULT"]["BATCH_SIZE"], help="Batch size for learning steps."
     )
 
-    parser.add_argument(
-        "-g", "--gamma", default=config["DEFAULT"]["GAMMA"], help="Discount Rate.")
+    parser.add_argument("-g", "--gamma", default=config["DEFAULT"]["GAMMA"], help="Discount Rate.")
 
     parser.add_argument(
         "-a",
@@ -85,7 +82,7 @@ if __name__ == "__main__":
         iterations = int(args.iterations)
     except ValueError as e:
         raise ValueError(
-            f"(i)terations argument should be int. Provided value ({args.iterations}) cannot be casted."  # noqa: TRY003
+            f"(i)terations argument should be int. Provided value ({args.iterations}) cannot be casted."
         ) from e
     if iterations <= 0:
         raise ValueError(f"(i)terations argument should be a positive integer. Got {iterations}")  # noqa: TRY003
@@ -94,7 +91,7 @@ if __name__ == "__main__":
         batch_size = int(args.batch_size)
     except ValueError as e:
         raise ValueError(
-            f"(b)atch_size argument should be int. Provided value ({args.batch_size}) cannot be casted."  # noqa: TRY003
+            f"(b)atch_size argument should be int. Provided value ({args.batch_size}) cannot be casted."
         ) from e
     if batch_size <= 0:
         raise ValueError(f"(b)atch_size argument should be a positive integer. Got {batch_size}")  # noqa: TRY003
@@ -103,7 +100,7 @@ if __name__ == "__main__":
         gamma = float(args.gamma)
     except ValueError as e:
         raise ValueError(
-            f"(g)amma argument should be a float number between 0 and 1. Provided value ({args.gamma}) cannot be casted."  # noqa: TRY003
+            f"(g)amma argument should be a float number between 0 and 1. Provided value ({args.gamma}) cannot be casted."
         ) from e
     if (gamma < 0) or (gamma > 1):
         raise ValueError(f"(g)amma argument should be a float number between 0 and 1. Got {gamma}")  # noqa: TRY003
@@ -112,7 +109,7 @@ if __name__ == "__main__":
         lr_a = float(args.learning_rate_actor)
     except ValueError as e:
         raise ValueError(
-            f"learning_rate_actor (a) argument should be a float number between 0 and 1. Provided value ({args.learning_rate_actor}) cannot be casted."  # noqa: TRY003
+            f"learning_rate_actor (a) argument should be a float number between 0 and 1. Provided value ({args.learning_rate_actor}) cannot be casted."
         ) from e
     if (lr_a < 0) or (lr_a > 1):
         raise ValueError(f"learning_rate_actor (a) argument should be a float number between 0 and 1. Got {lr_a}")  # noqa: TRY003
@@ -121,14 +118,13 @@ if __name__ == "__main__":
         lr_c = float(args.learning_rate_critic)
     except ValueError as e:
         raise ValueError(
-            f"learning_rate_critic (c) argument should be a float number between 0 and 1. Provided value ({args.learning_rate_critic}) cannot be casted."  # noqa: TRY003
+            f"learning_rate_critic (c) argument should be a float number between 0 and 1. Provided value ({args.learning_rate_critic}) cannot be casted."
         ) from e
     if (lr_c < 0) or (lr_c > 1):
         raise ValueError(f"learning_rate_critic (c) argument should be a float number between 0 and 1. Got {lr_c}")  # noqa: TRY003
 
     save_path = args.save_path  # TODO: Proper exception handling of save path
 
-    agent = Agent(gamma=gamma, lr_actor=lr_a, lr_critic=lr_c,
-                  fc1_size=32, fc2_size=32, save_path=save_path)
+    agent = Agent(gamma=gamma, lr_actor=lr_a, lr_critic=lr_c, fc1_size=32, fc2_size=32, save_path=save_path)
     agent.load()
     play(agent)
